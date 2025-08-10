@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "github.com/alibekkenny/simple-marketplace/product-service/proto;proto";
+
+service ProductOfferService {
+    rpc CreateProductOffer(CreateProductOfferRequest) returns (CreateProductOfferResponse);
+    rpc GetProductOffersByProduct(GetProductOffersByProductRequest) returns (GetProductOffersByProductResponse);
+}
+
+message CreateProductOfferRequest {
+    double price = 1;
+    int32 stock = 2;
+    bool is_active = 3;
+    int64 product_id = 4;
+    int64 supplier_id = 5; // user id of the supplier
+}
+
+message CreateProductOfferResponse {
+    int64 id = 1;
+}
+
+message ProductOffer {
+    int64 id = 1;
+    double price = 2;
+    int32 stock = 3;
+    bool is_active = 4;
+    int64 product_id = 5;
+    int64 supplier_id = 6; // user id of the supplier
+}
+
+message GetProductOffersByProductRequest {
+    int64 product_id = 1;
+}
+
+message GetProductOffersByProductResponse {
+    repeated ProductOffer offers = 1;
+}

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "github.com/alibekkenny/simple-marketplace/product-service/proto;proto";
+
+service ProductService {
+    rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse);
+    rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+    rpc ListProductsByCategory(ListProductsByCategoryRequest) returns (ListProductsByCategoryResponse);
+}
+
+message Product {
+    int64 id = 1;
+    string name = 2;
+    string description = 3;
+    string image_path = 4;
+    int64 category_id = 5;
+}
+
+message CreateProductRequest {
+    string name = 1;
+    string description = 2;
+    string image_path = 3;
+    int64 category_id = 4;    
+}
+
+message CreateProductResponse {
+    int64 id = 1;
+}
+
+message GetProductRequest {
+    int64 id = 1;
+}
+
+message GetProductResponse {
+    Product product = 1;
+}
+
+message ListProductsByCategoryRequest {
+    int64 category_id = 1;
+}
+
+message ListProductsByCategoryResponse {
+    repeated Product products = 1;
+}

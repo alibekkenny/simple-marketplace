@@ -1,0 +1,34 @@
+# Environment files
+*.env
+*.env.*
+
+# Go build artifacts
+bin/
+dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Generated protobuf code
+genproto/
+
+# Tmp, logs
+*.log
+logs/
+tmp/
+*.out
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Go modules cache
+vendor/
