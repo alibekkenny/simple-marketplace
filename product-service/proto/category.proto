@@ -6,8 +6,9 @@ option go_package = "github.com/alibekkenny/simple-marketplace/product-service/p
 
 service CategoryService {
     rpc CreateCategory(CreateCategoryRequest) returns (CreateCategoryResponse);
+    rpc UpdateCategory(UpdateCategoryRequest) returns (UpdateCategoryResponse);
+    rpc DeleteCategory(DeleteCategoryRequest) returns (DeleteCategoryResponse);
     rpc ListCategories(ListCategoriesRequest) returns (ListCategoriesResponse);
-    rpc GetCategory(GetCategoryRequest) returns (GetCategoryResponse);
 }
 
 message Category {
@@ -23,13 +24,20 @@ message CreateCategoryResponse {
     int64 id = 1;
 }
 
-message GetCategoryRequest {
+message UpdateCategoryRequest {
+    int64 id = 1;
+    string name = 2;
+}
+
+message UpdateCategoryResponse {
+    Category Category = 1;    
+}
+
+message DeleteCategoryRequest {
     int64 id = 1;
 }
 
-message GetCategoryResponse {
-    Category category = 1;
-}
+message DeleteCategoryResponse {}
 
 message ListCategoriesRequest {}
 

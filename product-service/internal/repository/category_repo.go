@@ -7,7 +7,8 @@ import (
 )
 
 type CategoryRepository interface {
-	CreateCategory(ctx context.Context, category *model.Category) (int, error)
+	CreateCategory(ctx context.Context, category *model.Category) (int64, error)
+	FindCategories(ctx context.Context) ([]model.Category, error)
 	UpdateCategory(ctx context.Context, category *model.Category) error
-	DeleteCategoryById(ctx context.Context, id int64) error
+	DeleteCategoryByID(ctx context.Context, id int64) error
 }

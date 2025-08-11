@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"net"
 	"os"
@@ -27,9 +26,7 @@ func main() {
 	dsn := os.Getenv("DSN")
 	jwtKey := os.Getenv("JWT_SECRET")
 
-	fmt.Println(dsn)
-
-	db, err := provideDB(dsn)
+	db, err := openDB(dsn)
 	if err != nil {
 		log.Fatalf("failed to connect to db: %v", err)
 	}
@@ -55,7 +52,7 @@ func main() {
 	}
 }
 
-func provideDB(dsn string) (*sql.DB, error) {
+func openDB(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		return nil, err
