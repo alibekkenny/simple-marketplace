@@ -30,10 +30,19 @@ func (a *App) Run() error {
 	}
 	defer db.Close()
 
-	categoryRepo := postgres_repo.NewCategoryPostgresRepository(db)
 	validator := validator.New()
+
+	categoryRepo := postgres_repo.NewCategoryPostgresRepository(db)
 	categoryService := service.NewCategoryService(categoryRepo, validator)
 	categoryHandler := grpcTransport.NewCategoryHandler(categoryService)
 
-	return NewGRPCServer(a.cfg.ServiceAddr, categoryHandler)
+	productRepo := postgres_repo.NewProductPostgresRepository(db)
+	productService := service.NewProductService(productRepo, validator)
+	productHandler := grpcTransport.NewProductHandler(productService)
+
+	productOfferRepo := postgres_repo.NewProductOfferPostgresRepository(db)
+	productOfferService := service.NewProductOfferService(productOfferRepo, validator)
+	productOfferHandler := grpcTransport.NewProductOfferHandler(productOfferService)
+
+	return NewGRPCServer(a.cfg.ServiceAddr, categoryHandler, productHandler, productOfferHandler)
 }

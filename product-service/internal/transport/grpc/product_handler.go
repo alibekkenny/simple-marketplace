@@ -17,6 +17,10 @@ type ProductHandler struct {
 	service *service.ProductService
 }
 
+func NewProductHandler(service *service.ProductService) *ProductHandler {
+	return &ProductHandler{service: service}
+}
+
 func (h *ProductHandler) CreateProduct(ctx context.Context, req *pb.CreateProductRequest) (*pb.CreateProductResponse, error) {
 	input := dto.ProductInput{
 		Name:        req.Name,
@@ -51,6 +55,21 @@ func (h *ProductHandler) UpdateProduct(ctx context.Context, req *pb.UpdateProduc
 		Description: input.Description,
 	}
 	return &pb.UpdateProductResponse{Product: &product}, nil
+}
+
+func (h *ProductHandler) DeleteProduct(ctx context.Context, req *pb.DeleteProductRequest) (*pb.DeleteProductResponse, error) {
+	id := req.Id
+
+	err := h.service.DeleteProduct(ctx, id)
+	if err != nil {
+		if errors.Is(err, model.ErrNotFound) {
+			return nil, status.Errorf(codes.NotFound, "product not found")
+		} else {
+			return nil, err
+		}
+	}
+
+	return &pb.DeleteProductResponse{}, nil
 }
 
 func (h *ProductHandler) GetProduct(ctx context.Context, req *pb.GetProductRequest) (*pb.GetProductResponse, error) {

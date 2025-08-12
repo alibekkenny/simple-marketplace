@@ -9,9 +9,13 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-func NewGRPCServer(addr string, categoryHandler pb.CategoryServiceServer) error {
+func NewGRPCServer(addr string, categoryHandler pb.CategoryServiceServer, productHandler pb.ProductServiceServer, productOfferHandler pb.ProductOfferServiceServer) error {
 	grpcServer := grpc.NewServer()
+
 	pb.RegisterCategoryServiceServer(grpcServer, categoryHandler)
+	pb.RegisterProductServiceServer(grpcServer, productHandler)
+	pb.RegisterProductOfferServiceServer(grpcServer, productOfferHandler)
+
 	reflection.Register(grpcServer)
 
 	lis, err := net.Listen("tcp", addr)
@@ -19,7 +23,7 @@ func NewGRPCServer(addr string, categoryHandler pb.CategoryServiceServer) error 
 		return err
 	}
 
-	log.Printf("UserService running on %v\n", addr)
+	log.Printf("ProductService running on %v\n", addr)
 	if err := grpcServer.Serve(lis); err != nil {
 		return err
 	}

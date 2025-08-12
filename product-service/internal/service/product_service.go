@@ -10,12 +10,12 @@ import (
 )
 
 type ProductService struct {
-	validator *validator.Validate
 	repo      repository.ProductRepository
+	validator *validator.Validate
 }
 
-func NewProductService(validator *validator.Validate, repo *repository.ProductRepository) *ProductService {
-	return &ProductService{validator: validator, repo: *repo}
+func NewProductService(repo repository.ProductRepository, validator *validator.Validate) *ProductService {
+	return &ProductService{repo: repo, validator: validator}
 }
 
 // rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse);

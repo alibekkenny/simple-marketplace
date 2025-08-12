@@ -6,7 +6,10 @@ option go_package = "github.com/alibekkenny/simple-marketplace/product-service/p
 
 service ProductOfferService {
     rpc CreateProductOffer(CreateProductOfferRequest) returns (CreateProductOfferResponse);
+    rpc UpdateProductOffer(UpdateProductOfferRequest) returns (UpdateProductOfferResponse);
+    rpc DeleteProductOffer(DeleteProductOfferRequest) returns (DeleteProductOfferResponse);
     rpc GetProductOffersByProduct(GetProductOffersByProductRequest) returns (GetProductOffersByProductResponse);
+    rpc GetProductOffersBySupplier(GetProductOffersBySupplierRequest) returns (GetProductOffersBySupplierResponse);
 }
 
 message CreateProductOfferRequest {
@@ -20,6 +23,23 @@ message CreateProductOfferRequest {
 message CreateProductOfferResponse {
     int64 id = 1;
 }
+
+message UpdateProductOfferRequest {
+    int64 id = 1;
+    double price = 2;
+    int32 stock = 3;
+    bool is_active = 4;
+}
+
+message UpdateProductOfferResponse {
+    ProductOffer offer = 1;
+}
+
+message DeleteProductOfferRequest {
+    int64 id = 1;
+}
+
+message DeleteProductOfferResponse {}
 
 message ProductOffer {
     int64 id = 1;
@@ -35,5 +55,13 @@ message GetProductOffersByProductRequest {
 }
 
 message GetProductOffersByProductResponse {
+    repeated ProductOffer offers = 1;
+}
+
+message GetProductOffersBySupplierRequest {
+    int64 supplier_id = 1;
+}
+
+message GetProductOffersBySupplierResponse {
     repeated ProductOffer offers = 1;
 }
