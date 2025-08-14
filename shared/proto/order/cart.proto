@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package order;
 
-option go_package = "github.com/alibekkenny/simple-marketplace/order-service/proto;order";
+option go_package = "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/order;order";
 
 service CartService {
     // card related rpcs

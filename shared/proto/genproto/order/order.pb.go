@@ -480,7 +480,7 @@ const file_order_proto_rawDesc = "" +
 	"\bCheckout\x12\x16.order.CheckoutRequest\x1a\x17.order.CheckoutResponse\x12G\n" +
 	"\fGetOrderById\x12\x1a.order.GetOrderByIdRequest\x1a\x1b.order.GetOrderByIdResponse\x12A\n" +
 	"\n" +
-	"ListOrders\x12\x18.order.ListOrdersRequest\x1a\x19.order.ListOrdersResponseBEZCgithub.com/alibekkenny/simple-marketplace/order-service/proto;orderb\x06proto3"
+	"ListOrders\x12\x18.order.ListOrdersRequest\x1a\x19.order.ListOrdersResponseBMZKgithub.com/alibekkenny/simple-marketplace/shared/proto/genproto/order;orderb\x06proto3"
 
 var (
 	file_order_proto_rawDescOnce sync.Once

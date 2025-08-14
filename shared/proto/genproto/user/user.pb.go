@@ -4,7 +4,7 @@
 // 	protoc        v5.29.3
 // source: user.proto
 
-package proto
+package user
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -249,7 +249,7 @@ const file_user_proto_rawDesc = "" +
 	"\x05token\x18\x01 \x01(\tR\x05token2z\n" +
 	"\vUserService\x129\n" +
 	"\bRegister\x12\x15.user.RegisterRequest\x1a\x16.user.RegisterResponse\x120\n" +
-	"\x05Login\x12\x12.user.LoginRequest\x1a\x13.user.LoginResponseBDZBgithub.com/alibekkenny/simple-marketplace/user-service/proto;protob\x06proto3"
+	"\x05Login\x12\x12.user.LoginRequest\x1a\x13.user.LoginResponseBKZIgithub.com/alibekkenny/simple-marketplace/shared/proto/genproto/user;userb\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once

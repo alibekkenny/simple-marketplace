@@ -4,7 +4,7 @@
 // 	protoc        v5.29.3
 // source: product.proto
 
-package proto
+package product
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -605,7 +605,7 @@ const file_product_proto_rawDesc = "" +
 	"\rDeleteProduct\x12\x1d.product.DeleteProductRequest\x1a\x1e.product.DeleteProductResponse\x12E\n" +
 	"\n" +
 	"GetProduct\x12\x1a.product.GetProductRequest\x1a\x1b.product.GetProductResponse\x12i\n" +
-	"\x16ListProductsByCategory\x12&.product.ListProductsByCategoryRequest\x1a'.product.ListProductsByCategoryResponseBGZEgithub.com/alibekkenny/simple-marketplace/product-service/proto;protob\x06proto3"
+	"\x16ListProductsByCategory\x12&.product.ListProductsByCategoryRequest\x1a'.product.ListProductsByCategoryResponseBQZOgithub.com/alibekkenny/simple-marketplace/shared/proto/genproto/product;productb\x06proto3"
 
 var (
 	file_product_proto_rawDescOnce sync.Once

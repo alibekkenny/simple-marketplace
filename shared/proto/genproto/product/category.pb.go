@@ -4,7 +4,7 @@
 // 	protoc        v5.29.3
 // source: category.proto
 
-package proto
+package product
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -446,7 +446,7 @@ const file_category_proto_rawDesc = "" +
 	"\x0eCreateCategory\x12\x1e.product.CreateCategoryRequest\x1a\x1f.product.CreateCategoryResponse\x12Q\n" +
 	"\x0eUpdateCategory\x12\x1e.product.UpdateCategoryRequest\x1a\x1f.product.UpdateCategoryResponse\x12Q\n" +
 	"\x0eDeleteCategory\x12\x1e.product.DeleteCategoryRequest\x1a\x1f.product.DeleteCategoryResponse\x12Q\n" +
-	"\x0eListCategories\x12\x1e.product.ListCategoriesRequest\x1a\x1f.product.ListCategoriesResponseBGZEgithub.com/alibekkenny/simple-marketplace/product-service/proto;protob\x06proto3"
+	"\x0eListCategories\x12\x1e.product.ListCategoriesRequest\x1a\x1f.product.ListCategoriesResponseBQZOgithub.com/alibekkenny/simple-marketplace/shared/proto/genproto/product;productb\x06proto3"
 
 var (
 	file_category_proto_rawDescOnce sync.Once

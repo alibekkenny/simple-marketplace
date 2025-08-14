@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package user;
 
-option go_package = "github.com/alibekkenny/simple-marketplace/user-service/proto;proto";
+option go_package = "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/user;user";
 
 service UserService {
     rpc Register(RegisterRequest) returns (RegisterResponse);

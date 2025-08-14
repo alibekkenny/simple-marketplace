@@ -4,7 +4,7 @@
 // 	protoc        v5.29.3
 // source: product_offer.proto
 
-package proto
+package product
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -642,7 +642,7 @@ const file_product_offer_proto_rawDesc = "" +
 	"\x12UpdateProductOffer\x12\".product.UpdateProductOfferRequest\x1a#.product.UpdateProductOfferResponse\x12]\n" +
 	"\x12DeleteProductOffer\x12\".product.DeleteProductOfferRequest\x1a#.product.DeleteProductOfferResponse\x12r\n" +
 	"\x19GetProductOffersByProduct\x12).product.GetProductOffersByProductRequest\x1a*.product.GetProductOffersByProductResponse\x12u\n" +
-	"\x1aGetProductOffersBySupplier\x12*.product.GetProductOffersBySupplierRequest\x1a+.product.GetProductOffersBySupplierResponseBGZEgithub.com/alibekkenny/simple-marketplace/product-service/proto;protob\x06proto3"
+	"\x1aGetProductOffersBySupplier\x12*.product.GetProductOffersBySupplierRequest\x1a+.product.GetProductOffersBySupplierResponseBQZOgithub.com/alibekkenny/simple-marketplace/shared/proto/genproto/product;productb\x06proto3"
 
 var (
 	file_product_offer_proto_rawDescOnce sync.Once

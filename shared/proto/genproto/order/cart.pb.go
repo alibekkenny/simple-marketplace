@@ -592,7 +592,7 @@ const file_cart_proto_rawDesc = "" +
 	"\x0eUpdateCartItem\x12\x1c.order.UpdateCartItemRequest\x1a\x1d.order.UpdateCartItemResponse\x12M\n" +
 	"\x0eRemoveCartItem\x12\x1c.order.RemoveCartItemRequest\x1a\x1d.order.RemoveCartItemResponse\x128\n" +
 	"\aGetCart\x12\x15.order.GetCartRequest\x1a\x16.order.GetCartResponse\x12>\n" +
-	"\tClearCart\x12\x17.order.ClearCartRequest\x1a\x18.order.ClearCartResponseBEZCgithub.com/alibekkenny/simple-marketplace/order-service/proto;orderb\x06proto3"
+	"\tClearCart\x12\x17.order.ClearCartRequest\x1a\x18.order.ClearCartResponseBMZKgithub.com/alibekkenny/simple-marketplace/shared/proto/genproto/order;orderb\x06proto3"
 
 var (
 	file_cart_proto_rawDescOnce sync.Once
