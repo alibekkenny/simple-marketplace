@@ -24,6 +24,7 @@ const (
 	ProductOfferService_DeleteProductOffer_FullMethodName         = "/product.ProductOfferService/DeleteProductOffer"
 	ProductOfferService_GetProductOffersByProduct_FullMethodName  = "/product.ProductOfferService/GetProductOffersByProduct"
 	ProductOfferService_GetProductOffersBySupplier_FullMethodName = "/product.ProductOfferService/GetProductOffersBySupplier"
+	ProductOfferService_GetProductOffer_FullMethodName            = "/product.ProductOfferService/GetProductOffer"
 )
 
 // ProductOfferServiceClient is the client API for ProductOfferService service.
@@ -35,6 +36,7 @@ type ProductOfferServiceClient interface {
 	DeleteProductOffer(ctx context.Context, in *DeleteProductOfferRequest, opts ...grpc.CallOption) (*DeleteProductOfferResponse, error)
 	GetProductOffersByProduct(ctx context.Context, in *GetProductOffersByProductRequest, opts ...grpc.CallOption) (*GetProductOffersByProductResponse, error)
 	GetProductOffersBySupplier(ctx context.Context, in *GetProductOffersBySupplierRequest, opts ...grpc.CallOption) (*GetProductOffersBySupplierResponse, error)
+	GetProductOffer(ctx context.Context, in *GetProductOfferRequest, opts ...grpc.CallOption) (*GetProductOfferResponse, error)
 }
 
 type productOfferServiceClient struct {
@@ -95,6 +97,16 @@ func (c *productOfferServiceClient) GetProductOffersBySupplier(ctx context.Conte
 	return out, nil
 }
 
+func (c *productOfferServiceClient) GetProductOffer(ctx context.Context, in *GetProductOfferRequest, opts ...grpc.CallOption) (*GetProductOfferResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetProductOfferResponse)
+	err := c.cc.Invoke(ctx, ProductOfferService_GetProductOffer_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductOfferServiceServer is the server API for ProductOfferService service.
 // All implementations must embed UnimplementedProductOfferServiceServer
 // for forward compatibility.
@@ -104,6 +116,7 @@ type ProductOfferServiceServer interface {
 	DeleteProductOffer(context.Context, *DeleteProductOfferRequest) (*DeleteProductOfferResponse, error)
 	GetProductOffersByProduct(context.Context, *GetProductOffersByProductRequest) (*GetProductOffersByProductResponse, error)
 	GetProductOffersBySupplier(context.Context, *GetProductOffersBySupplierRequest) (*GetProductOffersBySupplierResponse, error)
+	GetProductOffer(context.Context, *GetProductOfferRequest) (*GetProductOfferResponse, error)
 	mustEmbedUnimplementedProductOfferServiceServer()
 }
 
@@ -128,6 +141,9 @@ func (UnimplementedProductOfferServiceServer) GetProductOffersByProduct(context.
 }
 func (UnimplementedProductOfferServiceServer) GetProductOffersBySupplier(context.Context, *GetProductOffersBySupplierRequest) (*GetProductOffersBySupplierResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProductOffersBySupplier not implemented")
+}
+func (UnimplementedProductOfferServiceServer) GetProductOffer(context.Context, *GetProductOfferRequest) (*GetProductOfferResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProductOffer not implemented")
 }
 func (UnimplementedProductOfferServiceServer) mustEmbedUnimplementedProductOfferServiceServer() {}
 func (UnimplementedProductOfferServiceServer) testEmbeddedByValue()                             {}
@@ -240,6 +256,24 @@ func _ProductOfferService_GetProductOffersBySupplier_Handler(srv interface{}, ct
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProductOfferService_GetProductOffer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProductOfferRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductOfferServiceServer).GetProductOffer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProductOfferService_GetProductOffer_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductOfferServiceServer).GetProductOffer(ctx, req.(*GetProductOfferRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProductOfferService_ServiceDesc is the grpc.ServiceDesc for ProductOfferService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +300,10 @@ var ProductOfferService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProductOffersBySupplier",
 			Handler:    _ProductOfferService_GetProductOffersBySupplier_Handler,
+		},
+		{
+			MethodName: "GetProductOffer",
+			Handler:    _ProductOfferService_GetProductOffer_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

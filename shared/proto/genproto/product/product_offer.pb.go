@@ -593,6 +593,94 @@ func (x *GetProductOffersBySupplierResponse) GetOffers() []*ProductOffer {
 	return nil
 }
 
+type GetProductOfferRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetProductOfferRequest) Reset() {
+	*x = GetProductOfferRequest{}
+	mi := &file_product_offer_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetProductOfferRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetProductOfferRequest) ProtoMessage() {}
+
+func (x *GetProductOfferRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_product_offer_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetProductOfferRequest.ProtoReflect.Descriptor instead.
+func (*GetProductOfferRequest) Descriptor() ([]byte, []int) {
+	return file_product_offer_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *GetProductOfferRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type GetProductOfferResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Offer         *ProductOffer          `protobuf:"bytes,1,opt,name=offer,proto3" json:"offer,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetProductOfferResponse) Reset() {
+	*x = GetProductOfferResponse{}
+	mi := &file_product_offer_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetProductOfferResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetProductOfferResponse) ProtoMessage() {}
+
+func (x *GetProductOfferResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_product_offer_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetProductOfferResponse.ProtoReflect.Descriptor instead.
+func (*GetProductOfferResponse) Descriptor() ([]byte, []int) {
+	return file_product_offer_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *GetProductOfferResponse) GetOffer() *ProductOffer {
+	if x != nil {
+		return x.Offer
+	}
+	return nil
+}
+
 var File_product_offer_proto protoreflect.FileDescriptor
 
 const file_product_offer_proto_rawDesc = "" +
@@ -636,13 +724,18 @@ const file_product_offer_proto_rawDesc = "" +
 	"\vsupplier_id\x18\x01 \x01(\x03R\n" +
 	"supplierId\"S\n" +
 	"\"GetProductOffersBySupplierResponse\x12-\n" +
-	"\x06offers\x18\x01 \x03(\v2\x15.product.ProductOfferR\x06offers2\x9d\x04\n" +
+	"\x06offers\x18\x01 \x03(\v2\x15.product.ProductOfferR\x06offers\"(\n" +
+	"\x16GetProductOfferRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"F\n" +
+	"\x17GetProductOfferResponse\x12+\n" +
+	"\x05offer\x18\x01 \x01(\v2\x15.product.ProductOfferR\x05offer2\xf3\x04\n" +
 	"\x13ProductOfferService\x12]\n" +
 	"\x12CreateProductOffer\x12\".product.CreateProductOfferRequest\x1a#.product.CreateProductOfferResponse\x12]\n" +
 	"\x12UpdateProductOffer\x12\".product.UpdateProductOfferRequest\x1a#.product.UpdateProductOfferResponse\x12]\n" +
 	"\x12DeleteProductOffer\x12\".product.DeleteProductOfferRequest\x1a#.product.DeleteProductOfferResponse\x12r\n" +
 	"\x19GetProductOffersByProduct\x12).product.GetProductOffersByProductRequest\x1a*.product.GetProductOffersByProductResponse\x12u\n" +
-	"\x1aGetProductOffersBySupplier\x12*.product.GetProductOffersBySupplierRequest\x1a+.product.GetProductOffersBySupplierResponseBQZOgithub.com/alibekkenny/simple-marketplace/shared/proto/genproto/product;productb\x06proto3"
+	"\x1aGetProductOffersBySupplier\x12*.product.GetProductOffersBySupplierRequest\x1a+.product.GetProductOffersBySupplierResponse\x12T\n" +
+	"\x0fGetProductOffer\x12\x1f.product.GetProductOfferRequest\x1a .product.GetProductOfferResponseBQZOgithub.com/alibekkenny/simple-marketplace/shared/proto/genproto/product;productb\x06proto3"
 
 var (
 	file_product_offer_proto_rawDescOnce sync.Once
@@ -656,7 +749,7 @@ func file_product_offer_proto_rawDescGZIP() []byte {
 	return file_product_offer_proto_rawDescData
 }
 
-var file_product_offer_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_product_offer_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_product_offer_proto_goTypes = []any{
 	(*CreateProductOfferRequest)(nil),          // 0: product.CreateProductOfferRequest
 	(*CreateProductOfferResponse)(nil),         // 1: product.CreateProductOfferResponse
@@ -669,26 +762,31 @@ var file_product_offer_proto_goTypes = []any{
 	(*GetProductOffersByProductResponse)(nil),  // 8: product.GetProductOffersByProductResponse
 	(*GetProductOffersBySupplierRequest)(nil),  // 9: product.GetProductOffersBySupplierRequest
 	(*GetProductOffersBySupplierResponse)(nil), // 10: product.GetProductOffersBySupplierResponse
+	(*GetProductOfferRequest)(nil),             // 11: product.GetProductOfferRequest
+	(*GetProductOfferResponse)(nil),            // 12: product.GetProductOfferResponse
 }
 var file_product_offer_proto_depIdxs = []int32{
 	6,  // 0: product.UpdateProductOfferResponse.offer:type_name -> product.ProductOffer
 	6,  // 1: product.GetProductOffersByProductResponse.offers:type_name -> product.ProductOffer
 	6,  // 2: product.GetProductOffersBySupplierResponse.offers:type_name -> product.ProductOffer
-	0,  // 3: product.ProductOfferService.CreateProductOffer:input_type -> product.CreateProductOfferRequest
-	2,  // 4: product.ProductOfferService.UpdateProductOffer:input_type -> product.UpdateProductOfferRequest
-	4,  // 5: product.ProductOfferService.DeleteProductOffer:input_type -> product.DeleteProductOfferRequest
-	7,  // 6: product.ProductOfferService.GetProductOffersByProduct:input_type -> product.GetProductOffersByProductRequest
-	9,  // 7: product.ProductOfferService.GetProductOffersBySupplier:input_type -> product.GetProductOffersBySupplierRequest
-	1,  // 8: product.ProductOfferService.CreateProductOffer:output_type -> product.CreateProductOfferResponse
-	3,  // 9: product.ProductOfferService.UpdateProductOffer:output_type -> product.UpdateProductOfferResponse
-	5,  // 10: product.ProductOfferService.DeleteProductOffer:output_type -> product.DeleteProductOfferResponse
-	8,  // 11: product.ProductOfferService.GetProductOffersByProduct:output_type -> product.GetProductOffersByProductResponse
-	10, // 12: product.ProductOfferService.GetProductOffersBySupplier:output_type -> product.GetProductOffersBySupplierResponse
-	8,  // [8:13] is the sub-list for method output_type
-	3,  // [3:8] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	6,  // 3: product.GetProductOfferResponse.offer:type_name -> product.ProductOffer
+	0,  // 4: product.ProductOfferService.CreateProductOffer:input_type -> product.CreateProductOfferRequest
+	2,  // 5: product.ProductOfferService.UpdateProductOffer:input_type -> product.UpdateProductOfferRequest
+	4,  // 6: product.ProductOfferService.DeleteProductOffer:input_type -> product.DeleteProductOfferRequest
+	7,  // 7: product.ProductOfferService.GetProductOffersByProduct:input_type -> product.GetProductOffersByProductRequest
+	9,  // 8: product.ProductOfferService.GetProductOffersBySupplier:input_type -> product.GetProductOffersBySupplierRequest
+	11, // 9: product.ProductOfferService.GetProductOffer:input_type -> product.GetProductOfferRequest
+	1,  // 10: product.ProductOfferService.CreateProductOffer:output_type -> product.CreateProductOfferResponse
+	3,  // 11: product.ProductOfferService.UpdateProductOffer:output_type -> product.UpdateProductOfferResponse
+	5,  // 12: product.ProductOfferService.DeleteProductOffer:output_type -> product.DeleteProductOfferResponse
+	8,  // 13: product.ProductOfferService.GetProductOffersByProduct:output_type -> product.GetProductOffersByProductResponse
+	10, // 14: product.ProductOfferService.GetProductOffersBySupplier:output_type -> product.GetProductOffersBySupplierResponse
+	12, // 15: product.ProductOfferService.GetProductOffer:output_type -> product.GetProductOfferResponse
+	10, // [10:16] is the sub-list for method output_type
+	4,  // [4:10] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_product_offer_proto_init() }
@@ -702,7 +800,7 @@ func file_product_offer_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_product_offer_proto_rawDesc), len(file_product_offer_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -10,6 +10,7 @@ service ProductOfferService {
     rpc DeleteProductOffer(DeleteProductOfferRequest) returns (DeleteProductOfferResponse);
     rpc GetProductOffersByProduct(GetProductOffersByProductRequest) returns (GetProductOffersByProductResponse);
     rpc GetProductOffersBySupplier(GetProductOffersBySupplierRequest) returns (GetProductOffersBySupplierResponse);
+    rpc GetProductOffer(GetProductOfferRequest) returns (GetProductOfferResponse);
 }
 
 message CreateProductOfferRequest {
@@ -64,4 +65,12 @@ message GetProductOffersBySupplierRequest {
 
 message GetProductOffersBySupplierResponse {
     repeated ProductOffer offers = 1;
+}
+
+message GetProductOfferRequest {
+    int64 id = 1;
+}
+
+message GetProductOfferResponse {
+    ProductOffer offer = 1;
 }
