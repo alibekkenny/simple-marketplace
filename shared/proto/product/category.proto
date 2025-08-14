@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "github.com/alibekkenny/simple-marketplace/product-service/proto;proto";
+
+service CategoryService {
+    rpc CreateCategory(CreateCategoryRequest) returns (CreateCategoryResponse);
+    rpc UpdateCategory(UpdateCategoryRequest) returns (UpdateCategoryResponse);
+    rpc DeleteCategory(DeleteCategoryRequest) returns (DeleteCategoryResponse);
+    rpc ListCategories(ListCategoriesRequest) returns (ListCategoriesResponse);
+}
+
+message Category {
+    int64 id = 1;
+    string name = 2;
+}
+
+message CreateCategoryRequest {
+    string name = 1;
+}
+
+message CreateCategoryResponse {
+    int64 id = 1;
+}
+
+message UpdateCategoryRequest {
+    int64 id = 1;
+    string name = 2;
+}
+
+message UpdateCategoryResponse {
+    Category Category = 1;    
+}
+
+message DeleteCategoryRequest {
+    int64 id = 1;
+}
+
+message DeleteCategoryResponse {}
+
+message ListCategoriesRequest {}
+
+message ListCategoriesResponse {
+    repeated Category categories = 1;
+}

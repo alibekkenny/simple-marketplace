@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "github.com/alibekkenny/simple-marketplace/product-service/proto;proto";
+
+service ProductOfferService {
+    rpc CreateProductOffer(CreateProductOfferRequest) returns (CreateProductOfferResponse);
+    rpc UpdateProductOffer(UpdateProductOfferRequest) returns (UpdateProductOfferResponse);
+    rpc DeleteProductOffer(DeleteProductOfferRequest) returns (DeleteProductOfferResponse);
+    rpc GetProductOffersByProduct(GetProductOffersByProductRequest) returns (GetProductOffersByProductResponse);
+    rpc GetProductOffersBySupplier(GetProductOffersBySupplierRequest) returns (GetProductOffersBySupplierResponse);
+}
+
+message CreateProductOfferRequest {
+    double price = 1;
+    int32 stock = 2;
+    bool is_active = 3;
+    int64 product_id = 4;
+    int64 supplier_id = 5; // user id of the supplier
+}
+
+message CreateProductOfferResponse {
+    int64 id = 1;
+}
+
+message UpdateProductOfferRequest {
+    int64 id = 1;
+    double price = 2;
+    int32 stock = 3;
+    bool is_active = 4;
+}
+
+message UpdateProductOfferResponse {
+    ProductOffer offer = 1;
+}
+
+message DeleteProductOfferRequest {
+    int64 id = 1;
+}
+
+message DeleteProductOfferResponse {}
+
+message ProductOffer {
+    int64 id = 1;
+    double price = 2;
+    int32 stock = 3;
+    bool is_active = 4;
+    int64 product_id = 5;
+    int64 supplier_id = 6; // user id of the supplier
+}
+
+message GetProductOffersByProductRequest {
+    int64 product_id = 1;
+}
+
+message GetProductOffersByProductResponse {
+    repeated ProductOffer offers = 1;
+}
+
+message GetProductOffersBySupplierRequest {
+    int64 supplier_id = 1;
+}
+
+message GetProductOffersBySupplierResponse {
+    repeated ProductOffer offers = 1;
+}
