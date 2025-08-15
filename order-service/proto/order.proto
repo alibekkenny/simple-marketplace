@@ -2,67 +2,50 @@ syntax = "proto3";
 
 package order;
 
-option go_package = "github.com/alibekkenny/simple-marketplace/proto/order";
+option go_package = "github.com/alibekkenny/simple-marketplace/order-service/proto;order";
 
 service OrderService {
-    // Cart-related RPCs
-    rpc AddToCart(AddToCartRequest) returns (AddToCartResponse);
-    rpc GetCart(GetCartRequest) returns (GetCartResponse);
+    // order related rpcs
     rpc Checkout(CheckoutRequest) returns (CheckoutResponse);
-
-    // Order-related RPCs
-    rpc ListOrdersByUser(ListOrdersByUserRequest) returns (ListOrdersByUserResponse);
-}
-
-message AddToCartRequest {
-    int64 product_offer_id = 1; // ID of the product offer being added to the cart
-    uint32 quantity = 2; // Quantity of the product offer being added
-    double price = 3; // Price of the product offer at the time of adding to the cart
-    int64 user_id = 4;
-}
-
-message AddToCartResponse {
-    int64 cart_item_id = 1; // ID of the cart item created
-}
-
-message CartItem {
-    int64 id = 1; // Unique identifier for the cart item
-    int64 product_offer_id = 2; // ID of the product offer in the cart
-    uint32 quantity = 3; // Quantity of the product offer in the cart
-    double price = 4; // Price of the product offer at the time it was added to the cart
-}
-
-message GetCartRequest {
-    int64 user_id = 1; // ID of the user whose cart is being retrieved
-}
-
-message GetCartResponse {
-    repeated CartItem cart_items = 1; // List of items in the user's cart
+    rpc GetOrderById(GetOrderByIdRequest) returns (GetOrderByIdResponse);
+    rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
 }
 
 message CheckoutRequest {
-    int64 user_id = 1; // ID of the user checking out
-    string payment_method = 2; // e.g., "credit_card", "paypal"
-    string shipping_address = 3; // Address to ship the order to
+    int64 user_id = 1;
+    string payment_method = 2; // "card", "paypal", etc.
+    string shipping_address = 3;
 }
 
 message CheckoutResponse {
-    int64 order_id = 1; // ID of the created order
+    int64 order_id = 1;
+    string status = 2;
+}
+
+message GetOrderByIdRequest {
+    int64 order_id = 1;
+}
+message GetOrderByIdResponse {
+    Order order = 1;
+}
+
+message ListOrdersRequest {
+    int64 user_id = 1;
+}
+message ListOrdersResponse {
+    repeated Order orders = 1;
 }
 
 message Order {
-    int64 id = 1; // Unique identifier for the order
-    int64 user_id = 2; // ID of the user who placed the order
-    string status = 3; // e.g., "pending", "shipped", "delivered"
-    double total_amount = 4; // Total amount for the order
-    string payment_method = 5; // e.g., "credit_card", "paypal"
-    string shipping_address = 6; // Address to ship the order to
+    int64 id = 1;
+    int64 user_id = 2;
+    string status = 3;
+    string created_at = 4;
+    repeated OrderItem items = 5;
 }
 
-message ListOrdersByUserRequest {
-    int64 user_id = 1; // ID of the user whose orders are being listed
-}
-
-message ListOrdersByUserResponse {
-    repeated Order orders = 1; // List of orders placed by the user
+message OrderItem {
+    int64 product_offer_id = 1;
+    int32 quantity = 2;
+    double price = 3;
 }
