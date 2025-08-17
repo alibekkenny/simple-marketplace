@@ -3,14 +3,18 @@ package grpc
 import (
 	"context"
 
-	pb "github.com/alibekkenny/simple-marketplace/order-service/genproto"
 	"github.com/alibekkenny/simple-marketplace/order-service/internal/dto"
 	"github.com/alibekkenny/simple-marketplace/order-service/internal/service"
+	pb "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/order"
 )
 
 type CartHandler struct {
-	pb.UnimplementedOrderServiceServer
+	pb.UnimplementedCartServiceServer
 	service *service.CartService
+}
+
+func NewCartHandler(service *service.CartService) *CartHandler {
+	return &CartHandler{service: service}
 }
 
 // Cart-related RPCs

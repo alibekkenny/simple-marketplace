@@ -3,9 +3,9 @@ package grpc
 import (
 	"context"
 
-	pb "github.com/alibekkenny/simple-marketplace/order-service/genproto"
 	"github.com/alibekkenny/simple-marketplace/order-service/internal/dto"
 	"github.com/alibekkenny/simple-marketplace/order-service/internal/service"
+	pb "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/order"
 )
 
 type OrderHandler struct {

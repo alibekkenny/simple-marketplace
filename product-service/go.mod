@@ -3,6 +3,7 @@ module github.com/alibekkenny/simple-marketplace/product-service
 go 1.24.4
 
 require (
+	github.com/alibekkenny/simple-marketplace/shared/proto v0.0.0-20250814154805-e4a9b328aff3 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect

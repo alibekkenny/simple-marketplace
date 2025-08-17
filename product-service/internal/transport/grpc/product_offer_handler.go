@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 
-	pb "github.com/alibekkenny/simple-marketplace/product-service/genproto"
 	"github.com/alibekkenny/simple-marketplace/product-service/internal/dto"
 	"github.com/alibekkenny/simple-marketplace/product-service/internal/model"
 	"github.com/alibekkenny/simple-marketplace/product-service/internal/service"
+	pb "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/product"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -134,4 +134,23 @@ func (h *ProductOfferHandler) GetProductOffersBySupplier(ctx context.Context, re
 	}
 
 	return &pb.GetProductOffersBySupplierResponse{Offers: offersResponse}, nil
+}
+
+// rpc GetProductOffer(GetProductOfferRequest) returns (GetProductOfferResponse);
+func (h *ProductOfferHandler) GetProductOffer(ctx context.Context, req *pb.GetProductOfferRequest) (*pb.GetProductOfferResponse, error) {
+	productOffer, err := h.service.GetProductOffer(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	responseProductOffer := pb.ProductOffer{
+		Id:         productOffer.ID,
+		Price:      float64(productOffer.Price),
+		Stock:      productOffer.Stock,
+		IsActive:   productOffer.IsActive,
+		ProductId:  productOffer.ProductID,
+		SupplierId: productOffer.SupplierID,
+	}
+
+	return &pb.GetProductOfferResponse{Offer: &responseProductOffer}, nil
 }

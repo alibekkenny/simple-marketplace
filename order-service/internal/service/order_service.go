@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/alibekkenny/simple-marketplace/order-service/internal/dto"
 	"github.com/alibekkenny/simple-marketplace/order-service/internal/model"
@@ -14,12 +15,12 @@ import (
 type OrderService struct {
 	validator     *validator.Validate
 	repo          repository.OrderRepository
-	cartService   CartService
+	cartService   *CartService
 	productClient pb.ProductOfferServiceClient
 }
 
-func NewOrderService(validator *validator.Validate, repo repository.OrderRepository) *OrderService {
-	return &OrderService{validator: validator, repo: repo}
+func NewOrderService(validator *validator.Validate, repo repository.OrderRepository, cartService *CartService, productOfferClient pb.ProductOfferServiceClient) *OrderService {
+	return &OrderService{validator: validator, repo: repo, cartService: cartService, productClient: productOfferClient}
 }
 
 // rpc Checkout(CheckoutRequest) returns (CheckoutResponse);
@@ -38,21 +39,11 @@ func (s *OrderService) Checkout(ctx context.Context, input dto.CheckoutInput) (*
 		return nil, err
 	}
 
-	order := model.Order{
-		TotalAmount:     totalAmount,
-		Status:          "new",
-		UserID:          input.UserID,
-		PaymentMethod:   input.PaymentMethod,
-		ShippingAddress: input.ShippingAddress,
-		Items:           orderItems,
-	}
+	order := s.buildOrder(totalAmount, input, orderItems)
 
-	id, err := s.repo.CreateOrder(ctx, &order)
-	if err != nil {
+	if err := s.saveOrderWithOrderItems(ctx, &order); err != nil {
 		return nil, err
 	}
-
-	order.ID = id
 
 	return &order, nil
 }
@@ -60,7 +51,7 @@ func (s *OrderService) Checkout(ctx context.Context, input dto.CheckoutInput) (*
 // rpc GetOrderById(GetOrderByIdRequest) returns (GetOrderByIdResponse);
 func (s *OrderService) GetOrderByID(ctx context.Context, id int64) (*model.Order, error) {
 	if id <= 0 {
-		return nil, model.ErrNotFound
+		return nil, model.ErrOrderNotFound
 	}
 
 	return s.repo.FindOrderByID(ctx, id)
@@ -69,7 +60,7 @@ func (s *OrderService) GetOrderByID(ctx context.Context, id int64) (*model.Order
 // rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
 func (s *OrderService) ListOrders(ctx context.Context, userID int64) ([]*model.Order, error) {
 	if userID <= 0 {
-		return nil, model.ErrNotFound
+		return nil, model.ErrOrderNotFound
 	}
 
 	return s.repo.FindOrdersByUserID(ctx, userID)
@@ -108,4 +99,23 @@ func (s *OrderService) prepareOrderItems(ctx context.Context, items []*model.Car
 	}
 
 	return orderItems, totalAmount, nil
+}
+
+func (s *OrderService) buildOrder(totalAmount float64, input dto.CheckoutInput, orderItems []*model.OrderItem) model.Order {
+	return model.Order{
+		TotalAmount:     totalAmount,
+		Status:          "new",
+		UserID:          input.UserID,
+		PaymentMethod:   input.PaymentMethod,
+		ShippingAddress: input.ShippingAddress,
+		Items:           orderItems,
+	}
+}
+
+func (s *OrderService) saveOrderWithOrderItems(ctx context.Context, order *model.Order) error {
+	if err := s.repo.CreateOrder(ctx, order); err != nil {
+		return fmt.Errorf("failed to create order: %w", err)
+	}
+
+	return nil
 }

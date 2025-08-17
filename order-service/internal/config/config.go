@@ -2,24 +2,21 @@ package config
 
 import (
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	DSN         string
-	ServiceAddr string
+	OrderDSN           string
+	CartDSN            string
+	ServiceAddr        string
+	ProductServiceAddr string
 }
 
 func Load() (*Config, error) {
-	err := godotenv.Load()
-	if err != nil {
-		return nil, err
-	}
-
 	cfg := &Config{
-		DSN:         os.Getenv("DSN"),
-		ServiceAddr: os.Getenv("SERVICE_ADDR"),
+		OrderDSN:           os.Getenv("DATABASE_URL"),
+		CartDSN:            os.Getenv("REDIS_URL"),
+		ServiceAddr:        os.Getenv("SERVICE_ADDR"),
+		ProductServiceAddr: os.Getenv("PRODUCT_SERVICE_ADDR"),
 	}
 
 	return cfg, nil

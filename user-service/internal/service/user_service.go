@@ -78,6 +78,7 @@ func (s *UserService) Login(ctx context.Context, input dto.LoginInput) (string, 
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id":    foundUser.ID,
+		"user_role":  foundUser.Role,
 		"expires_at": time.Now().Add(24 * time.Hour),
 		"iat":        time.Now(),
 	})

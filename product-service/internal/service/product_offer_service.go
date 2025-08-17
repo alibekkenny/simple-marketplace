@@ -95,3 +95,11 @@ func (s *ProductOfferService) GetProductOffersBySupplier(ctx context.Context, su
 
 	return s.repo.FindProductOffersBySupplierID(ctx, supplierID)
 }
+
+func (s *ProductOfferService) GetProductOffer(ctx context.Context, id int64) (*model.ProductOffer, error) {
+	if id <= 0 {
+		return nil, model.ErrNotFound
+	}
+
+	return s.repo.FindProductOfferByID(ctx, id)
+}

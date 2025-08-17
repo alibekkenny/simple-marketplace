@@ -1,0 +1,137 @@
+services:
+  # ======= BEGIN API-GATEWAY ========
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    environment:
+      - SERVICE_ADDR=:50050
+      - USER_SERVICE_ADDR=user-service:50051
+      - PRODUCT_SERVICE_ADDR=product-service:50052
+      - ORDER_SERVICE_ADDR=order-service:50053
+      - JWT_SECRET=my_secret
+    ports:
+      - "8000:50050"
+
+  # ====== BEGIN USER-SERVICE ========
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    environment:
+      - DATABASE_URL=postgres://app:secret@users-db:5432/users?sslmode=disable
+      - SERVICE_ADDR=:50051
+      - JWT_SECRET=my_secret
+    ports:
+      - "8001:50051"
+    depends_on:
+      - users-db
+      - user-migrate
+  
+  users-db:
+    image: postgres:15
+    container_name: users-db
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=users
+    volumes:
+      - users-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  user-migrate:
+    image: migrate/migrate:latest
+    container_name: user-migrate
+    command: ["-path", "/migrations", "-database", "postgres://app:secret@users-db:5432/users?sslmode=disable", "up"]
+    volumes:
+      - ./user-service/migrations:/migrations
+    depends_on:
+      - users-db
+
+  # ======= END USER-SERVICE =============
+
+  # ======= BEGIN PRODUCT-SERVICE ========
+  product-service:
+    build: ./product-service
+    container_name: product-service
+    environment:
+      - DATABASE_URL=postgres://app:secret@products-db:5432/products?sslmode=disable
+      - SERVICE_ADDR=:50052
+    ports:
+      - "8002:50052"
+    depends_on:
+      - products-db
+      - product-migrate
+
+  products-db:
+    image: postgres:15
+    container_name: products-db
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=products
+    volumes:
+      - products-data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+
+  product-migrate:
+    image: migrate/migrate:latest
+    container_name: product-migrate
+    command: ["-path", "/migrations", "-database", "postgres://app:secret@products-db:5432/products?sslmode=disable", "up"]
+    volumes:
+      - ./product-service/migrations:/migrations
+    depends_on:
+      - products-db
+
+  # ====== END PRODUCT-SERVICE ===========
+
+  # ====== BEGIN ORDER-SERVICE ===========
+  order-service:
+    build: ./order-service
+    container_name: order-service
+    environment:
+      - DATABASE_URL=postgres://app:secret@orders-db:5432/orders?sslmode=disable
+      - REDIS_URL=redis://:redis_secret@orders-redis:6379
+      - SERVICE_ADDR=:50053
+    ports:
+      - "8003:50053"
+    depends_on:
+      - orders-db
+      - orders-redis
+      - order-migrate
+
+  orders-db:
+    image: postgres:15
+    container_name: orders-db
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: orders
+    volumes:
+      - orders-data:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    
+  orders-redis:
+    image: redis:7
+    container_name: orders-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - order-redis-data:/data
+
+  order-migrate:
+    image: migrate/migrate:latest
+    container_name: order-migrate
+    command: ["-path", "/migrations", "-database", "postgres://app:secret@orders-db:5432/orders?sslmode=disable", "up"]
+    volumes:
+      - ./order-service/migrations:/migrations
+    depends_on:
+      - orders-db
+
+volumes:
+  users-data:
+  products-data:
+  orders-data:
+  order-redis-data:

@@ -4,7 +4,7 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/alibekkenny/simple-marketplace/product-service/genproto"
+	pb "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/product"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

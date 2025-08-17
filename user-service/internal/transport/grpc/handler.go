@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 
-	pb "github.com/alibekkenny/simple-marketplace/user-service/genproto"
+	pb "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/user"
 	"github.com/alibekkenny/simple-marketplace/user-service/internal/dto"
 	"github.com/alibekkenny/simple-marketplace/user-service/internal/service"
 )

@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 
-	pb "github.com/alibekkenny/simple-marketplace/product-service/genproto"
 	"github.com/alibekkenny/simple-marketplace/product-service/internal/dto"
 	"github.com/alibekkenny/simple-marketplace/product-service/internal/model"
 	"github.com/alibekkenny/simple-marketplace/product-service/internal/service"
+	pb "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/product"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

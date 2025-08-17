@@ -1,8 +1,8 @@
 package grpc
 
 import (
-	pb "github.com/alibekkenny/simple-marketplace/order-service/genproto"
 	"github.com/alibekkenny/simple-marketplace/order-service/internal/model"
+	pb "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/order"
 )
 
 func mapOrdersToProto(orders []*model.Order) []*pb.Order {

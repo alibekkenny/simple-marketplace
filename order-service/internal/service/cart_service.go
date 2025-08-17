@@ -14,6 +14,10 @@ type CartService struct {
 	repo      repository.CartRepository
 }
 
+func NewCartService(validator *validator.Validate, repo repository.CartRepository) *CartService {
+	return &CartService{validator: validator, repo: repo}
+}
+
 func (s *CartService) AddToCart(ctx context.Context, input *dto.AddToCartInput) error {
 	if err := s.validator.Struct(input); err != nil {
 		return err
@@ -24,7 +28,7 @@ func (s *CartService) AddToCart(ctx context.Context, input *dto.AddToCartInput) 
 		ProductOfferID: input.ProductOfferID,
 	}
 
-	err := s.repo.AddToCart(ctx, input.UserID, cartItem)
+	err := s.repo.AddToCart(ctx, input.UserID, &cartItem)
 	if err != nil {
 		return err
 	}
@@ -34,7 +38,7 @@ func (s *CartService) AddToCart(ctx context.Context, input *dto.AddToCartInput) 
 
 func (s *CartService) GetCart(ctx context.Context, userID int64) ([]*model.CartItem, error) {
 	if userID <= 0 {
-		return nil, model.ErrNotFound
+		return nil, model.ErrUserNotFound
 	}
 
 	return s.repo.GetCart(ctx, userID)
@@ -46,7 +50,7 @@ func (s *CartService) UpdateCartItem(ctx context.Context, input *dto.UpdateCartI
 	}
 
 	if input.UserId <= 0 {
-		return model.ErrNotFound
+		return model.ErrUserNotFound
 	}
 
 	cartItem := model.CartItem{
@@ -54,12 +58,14 @@ func (s *CartService) UpdateCartItem(ctx context.Context, input *dto.UpdateCartI
 		ProductOfferID: input.ProductOfferId,
 	}
 
-	return s.repo.UpdateCartItem(ctx, input.UserId, cartItem)
+	return s.repo.UpdateCartItem(ctx, input.UserId, &cartItem)
 }
 
 func (s *CartService) RemoveCartItem(ctx context.Context, userID, productOfferID int64) error {
-	if userID <= 0 || productOfferID <= 0 {
-		return model.ErrNotFound
+	if userID <= 0 {
+		return model.ErrUserNotFound
+	} else if productOfferID <= 0 {
+		return model.ErrProductOfferNotFound
 	}
 
 	return s.repo.RemoveCartItem(ctx, userID, productOfferID)
@@ -67,7 +73,7 @@ func (s *CartService) RemoveCartItem(ctx context.Context, userID, productOfferID
 
 func (s *CartService) ClearCart(ctx context.Context, userID int64) error {
 	if userID <= 0 {
-		return model.ErrNotFound
+		return model.ErrUserNotFound
 	}
 
 	return s.repo.ClearCart(ctx, userID)
