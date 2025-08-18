@@ -24,8 +24,8 @@ func NewProductOfferHandler(service *service.ProductOfferService) *ProductOfferH
 // rpc CreateProductOffer(CreateProductOfferRequest) returns (CreateProductOfferResponse);
 func (h *ProductOfferHandler) CreateProductOffer(ctx context.Context, req *pb.CreateProductOfferRequest) (*pb.CreateProductOfferResponse, error) {
 	input := dto.CreateProductOfferInput{
-		Price:      float32(req.Price),
-		Stock:      req.Stock,
+		Price:      req.Price,
+		Stock:      &req.Stock,
 		IsActive:   &req.IsActive,
 		ProductID:  req.ProductId,
 		SupplierID: req.SupplierId,
@@ -42,9 +42,9 @@ func (h *ProductOfferHandler) CreateProductOffer(ctx context.Context, req *pb.Cr
 // rpc UpdateProductOffer(UpdateProductOfferRequest) returns (UpdateProductOfferResponse);
 func (h *ProductOfferHandler) UpdateProductOffer(ctx context.Context, req *pb.UpdateProductOfferRequest) (*pb.UpdateProductOfferResponse, error) {
 	input := dto.UpdateProductOfferInput{
-		Price:    float32(req.Price),
-		Stock:    req.Stock,
-		IsActive: req.IsActive,
+		Price:    req.Price,
+		Stock:    &req.Stock,
+		IsActive: &req.IsActive,
 	}
 
 	productOffer, err := h.service.UpdateProductOffer(ctx, req.Id, input)
@@ -58,7 +58,7 @@ func (h *ProductOfferHandler) UpdateProductOffer(ctx context.Context, req *pb.Up
 
 	responseProductOffer := pb.ProductOffer{
 		Id:         productOffer.ID,
-		Price:      float64(productOffer.Price),
+		Price:      productOffer.Price,
 		Stock:      productOffer.Stock,
 		IsActive:   productOffer.IsActive,
 		ProductId:  productOffer.ProductID,
@@ -98,7 +98,7 @@ func (h *ProductOfferHandler) GetProductOffersByProduct(ctx context.Context, req
 	for _, offer := range offers {
 		offerResponse := pb.ProductOffer{
 			Id:         offer.ID,
-			Price:      float64(offer.Price),
+			Price:      offer.Price,
 			Stock:      offer.Stock,
 			ProductId:  offer.ProductID,
 			SupplierId: offer.SupplierID,
@@ -124,7 +124,7 @@ func (h *ProductOfferHandler) GetProductOffersBySupplier(ctx context.Context, re
 	for _, offer := range offers {
 		offerResponse := pb.ProductOffer{
 			Id:         offer.ID,
-			Price:      float64(offer.Price),
+			Price:      offer.Price,
 			Stock:      offer.Stock,
 			ProductId:  offer.ProductID,
 			SupplierId: offer.SupplierID,
@@ -145,7 +145,7 @@ func (h *ProductOfferHandler) GetProductOffer(ctx context.Context, req *pb.GetPr
 
 	responseProductOffer := pb.ProductOffer{
 		Id:         productOffer.ID,
-		Price:      float64(productOffer.Price),
+		Price:      productOffer.Price,
 		Stock:      productOffer.Stock,
 		IsActive:   productOffer.IsActive,
 		ProductId:  productOffer.ProductID,

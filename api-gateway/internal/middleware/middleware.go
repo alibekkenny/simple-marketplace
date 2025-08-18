@@ -13,8 +13,8 @@ import (
 type contextKey string
 
 const (
-	userIDKey contextKey = "user_id"
-	roleKey   contextKey = "user_role"
+	UserIDKey contextKey = "user_id"
+	RoleKey   contextKey = "user_role"
 )
 
 type Middleware func(http.Handler) http.Handler
@@ -66,20 +66,20 @@ func AuthMiddleware(secret string) func(http.Handler) http.Handler {
 				return
 			}
 
-			userID, ok := claims[string(userIDKey)].(float64)
+			userID, ok := claims[string(UserIDKey)].(float64)
 			if !ok {
 				http.Error(w, "Invalid token claims", http.StatusUnauthorized)
 				return
 			}
 
-			role, ok := claims[string(roleKey)].(string)
+			role, ok := claims[string(RoleKey)].(string)
 			if !ok {
 				http.Error(w, "Invalid token claims", http.StatusUnauthorized)
 				return
 			}
 
-			ctx := context.WithValue(r.Context(), userIDKey, int64(userID))
-			ctx = context.WithValue(ctx, roleKey, role)
+			ctx := context.WithValue(r.Context(), UserIDKey, int64(userID))
+			ctx = context.WithValue(ctx, RoleKey, role)
 
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
@@ -89,7 +89,7 @@ func AuthMiddleware(secret string) func(http.Handler) http.Handler {
 func RoleMiddleware(allowedRoles ...string) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			currentRole, ok := r.Context().Value(roleKey).(string)
+			currentRole, ok := r.Context().Value(RoleKey).(string)
 			if !ok {
 				http.Error(w, "missing role in context", http.StatusForbidden)
 				return

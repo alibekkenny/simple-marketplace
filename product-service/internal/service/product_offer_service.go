@@ -28,7 +28,7 @@ func (s *ProductOfferService) CreateProductOffer(ctx context.Context, input dto.
 
 	productOffer := model.ProductOffer{
 		Price:      input.Price,
-		Stock:      input.Stock,
+		Stock:      *input.Stock,
 		IsActive:   *input.IsActive,
 		ProductID:  input.ProductID,
 		SupplierID: input.SupplierID,
@@ -58,8 +58,8 @@ func (s *ProductOfferService) UpdateProductOffer(ctx context.Context, id int64, 
 	}
 
 	productOffer.Price = input.Price
-	productOffer.IsActive = input.IsActive
-	productOffer.Stock = input.Stock
+	productOffer.IsActive = *input.IsActive
+	productOffer.Stock = *input.Stock
 
 	err = s.repo.UpdateProductOffer(ctx, productOffer)
 	if err != nil {

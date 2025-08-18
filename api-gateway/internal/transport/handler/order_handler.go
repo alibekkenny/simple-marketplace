@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/alibekkenny/simple-marketplace/api-gateway/internal/middleware"
 	pb "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/order"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -20,7 +21,7 @@ func NewOrderHandler(client pb.OrderServiceClient) *OrderHandler {
 }
 
 func (h *OrderHandler) Checkout(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value("user_id").(int64)
+	userID, ok := r.Context().Value(middleware.UserIDKey).(int64)
 	if userID == 0 || !ok {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
@@ -91,7 +92,7 @@ func (h *OrderHandler) GetOrderByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *OrderHandler) ListOrdersByUserID(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value("user_id").(int64)
+	userID, ok := r.Context().Value(middleware.UserIDKey).(int64)
 	if userID == 0 || !ok {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return

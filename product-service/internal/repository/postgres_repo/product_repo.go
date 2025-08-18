@@ -105,6 +105,9 @@ func (r *ProductPostgresRepository) FindProductByID(ctx context.Context, id int6
 
 	err := r.db.QueryRowContext(ctx, stmt, id).Scan(&product.ID, &product.Name, &product.Description, &product.CategoryID)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, model.ErrNotFound
+		}
 		return nil, err
 	}
 

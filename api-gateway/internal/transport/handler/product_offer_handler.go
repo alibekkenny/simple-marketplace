@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/alibekkenny/simple-marketplace/api-gateway/internal/middleware"
 	pb "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/product"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -20,7 +21,7 @@ func NewProductOfferHandler(client pb.ProductOfferServiceClient) *ProductOfferHa
 }
 
 func (h *ProductOfferHandler) CreateProductOffer(w http.ResponseWriter, r *http.Request) {
-	supplierID, ok := r.Context().Value("user_id").(int64)
+	supplierID, ok := r.Context().Value(middleware.UserIDKey).(int64)
 	if supplierID == 0 || !ok {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
@@ -75,10 +76,10 @@ func (h *ProductOfferHandler) CreateProductOffer(w http.ResponseWriter, r *http.
 }
 
 func (h *ProductOfferHandler) UpdateProductOffer(w http.ResponseWriter, r *http.Request) {
-	idStr := r.PathValue("id")
+	idStr := r.PathValue("offer_id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("invalid id:\n%v", err), http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("invalid offer_id:\n%v", err), http.StatusBadRequest)
 		return
 	}
 
@@ -185,7 +186,7 @@ func (h *ProductOfferHandler) GetProductOfferByID(w http.ResponseWriter, r *http
 }
 
 func (h *ProductOfferHandler) ListProductOffersByProductID(w http.ResponseWriter, r *http.Request) {
-	productIDStr := r.URL.Query().Get("product_id")
+	productIDStr := r.PathValue("product_id")
 	productID, err := strconv.ParseInt(productIDStr, 10, 64)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("invalid product_id:\n%v", err), http.StatusBadRequest)
@@ -217,7 +218,7 @@ func (h *ProductOfferHandler) ListProductOffersByProductID(w http.ResponseWriter
 }
 
 func (h *ProductOfferHandler) ListProductOffersBySupplierID(w http.ResponseWriter, r *http.Request) {
-	supplierID, ok := r.Context().Value("user_id").(int64)
+	supplierID, ok := r.Context().Value(middleware.UserIDKey).(int64)
 	if supplierID == 0 || !ok {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return

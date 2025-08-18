@@ -47,7 +47,7 @@ func (s *ProductService) UpdateProduct(ctx context.Context, id int64, input dto.
 	product := model.Product{
 		ID:          id,
 		Name:        input.Name,
-		Description: input.Name,
+		Description: input.Description,
 		CategoryID:  input.CategoryID,
 	}
 

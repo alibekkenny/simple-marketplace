@@ -85,6 +85,7 @@ func (h *CategoryHandler) ListCategories(ctx context.Context, req *pb.ListCatego
 
 	for _, category := range categories {
 		responseCategories = append(responseCategories, &pb.Category{
+			Id:   category.ID,
 			Name: category.Name,
 		})
 	}

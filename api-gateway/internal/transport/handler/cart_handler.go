@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/alibekkenny/simple-marketplace/api-gateway/internal/middleware"
 	pb "github.com/alibekkenny/simple-marketplace/shared/proto/genproto/order"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -21,7 +22,7 @@ func NewCartHandler(client pb.CartServiceClient) *CartHandler {
 
 // AddToCart
 func (h *CartHandler) AddToCart(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value("user_id").(int64)
+	userID, ok := r.Context().Value(middleware.UserIDKey).(int64)
 	if userID == 0 || !ok {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
@@ -65,7 +66,7 @@ func (h *CartHandler) AddToCart(w http.ResponseWriter, r *http.Request) {
 
 // UpdateCartItem
 func (h *CartHandler) UpdateCartItem(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value("user_id").(int64)
+	userID, ok := r.Context().Value(middleware.UserIDKey).(int64)
 	if userID == 0 || !ok {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
@@ -115,7 +116,7 @@ func (h *CartHandler) UpdateCartItem(w http.ResponseWriter, r *http.Request) {
 
 // RemoveCartItem
 func (h *CartHandler) RemoveCartItem(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value("user_id").(int64)
+	userID, ok := r.Context().Value(middleware.UserIDKey).(int64)
 	if userID == 0 || !ok {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
@@ -153,7 +154,7 @@ func (h *CartHandler) RemoveCartItem(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *CartHandler) GetCart(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value("user_id").(int64)
+	userID, ok := r.Context().Value(middleware.UserIDKey).(int64)
 	if userID == 0 || !ok {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
@@ -180,7 +181,7 @@ func (h *CartHandler) GetCart(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *CartHandler) ClearCart(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value("user_id").(int64)
+	userID, ok := r.Context().Value(middleware.UserIDKey).(int64)
 	if userID == 0 || !ok {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
