@@ -53,7 +53,7 @@ func (r *ProductOfferPostgresRepository) UpdateProductOffer(ctx context.Context,
 
 // DeleteProductOfferByID(ctx context.Context, id int64) error
 func (r *ProductOfferPostgresRepository) DeleteProductOfferByID(ctx context.Context, id int64) error {
-	stmt := `DELET FROM product_offers WHERE id = $1`
+	stmt := `DELETE FROM product_offers WHERE id = $1`
 
 	row, err := r.db.ExecContext(ctx, stmt, id)
 	if err != nil {

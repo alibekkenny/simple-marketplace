@@ -60,7 +60,7 @@ func (r CartRedisRepository) GetCart(ctx context.Context, userID int64) ([]*mode
 
 	items := []*model.CartItem{}
 	for _, v := range values {
-		var item *model.CartItem
+		item := &model.CartItem{}
 		if err := json.Unmarshal([]byte(v), item); err != nil {
 			return nil, fmt.Errorf("failed to get cart by user_id %d: %w", userID, err)
 		}

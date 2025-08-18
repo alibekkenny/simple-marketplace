@@ -43,9 +43,9 @@ func (a *App) routes(user *handler.UserHandler,
 
 	mux.Handle("POST /product/{product_id}/offer", supplierRole.Then(http.HandlerFunc(productOffer.CreateProductOffer)))
 	mux.Handle("GET /product/{product_id}/offer", standartChain.Then(http.HandlerFunc(productOffer.ListProductOffersByProductID)))
-	mux.Handle("GET /product/offer/{offer_id}", standartChain.Then(http.HandlerFunc(productOffer.GetProductOfferByID)))
-	mux.Handle("PUT /product/offer/{offer_id}", supplierRole.Then(http.HandlerFunc(productOffer.UpdateProductOffer)))
-	mux.Handle("DELETE /product/offer/{offer_id}", supplierRole.Then(http.HandlerFunc(productOffer.DeleteProductOffer)))
+	mux.Handle("GET /offer/{offer_id}", standartChain.Then(http.HandlerFunc(productOffer.GetProductOfferByID)))
+	mux.Handle("PUT /offer/{offer_id}", supplierRole.Then(http.HandlerFunc(productOffer.UpdateProductOffer)))
+	mux.Handle("DELETE /offer/{offer_id}", supplierRole.Then(http.HandlerFunc(productOffer.DeleteProductOffer)))
 
 	mux.Handle("GET /cart", authChain.Then(http.HandlerFunc(cart.GetCart)))
 	mux.Handle("POST /cart/item", authChain.Then(http.HandlerFunc(cart.AddToCart)))
