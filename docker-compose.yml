@@ -93,6 +93,7 @@ services:
       - DATABASE_URL=postgres://app:secret@orders-db:5432/orders?sslmode=disable
       - REDIS_URL=redis://:redis_secret@orders-redis:6379
       - SERVICE_ADDR=:50053
+      - PRODUCT_SERVICE_ADDR=product-service:50052
     ports:
       - "8003:50053"
     depends_on:

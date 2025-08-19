@@ -45,6 +45,10 @@ func (s *OrderService) Checkout(ctx context.Context, input dto.CheckoutInput) (*
 		return nil, err
 	}
 
+	if err := s.cartService.ClearCart(ctx, input.UserID); err != nil {
+		return nil, err
+	}
+
 	return &order, nil
 }
 
