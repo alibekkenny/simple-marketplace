@@ -64,7 +64,7 @@ func (h *OrderHandler) Checkout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *OrderHandler) GetOrderByID(w http.ResponseWriter, r *http.Request) {
-	orderIDStr := r.URL.Query().Get("id")
+	orderIDStr := r.PathValue("id")
 	orderID, err := strconv.ParseInt(orderIDStr, 10, 64)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("invalid order id:\n%v", err), http.StatusBadRequest)
