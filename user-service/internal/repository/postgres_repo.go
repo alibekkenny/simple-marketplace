@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"errors"
 
 	"github.com/alibekkenny/simple-marketplace/user-service/internal/model"
 )
@@ -16,12 +17,15 @@ func NewPostgresRepository(db *sql.DB) *PostgresRepository {
 }
 
 // GetUserByID(id string) (*model.User, error)
-func (r *PostgresRepository) GetUserByID(ctx context.Context, id string) (*model.User, error) {
+func (r *PostgresRepository) FindUserByID(ctx context.Context, id int64) (*model.User, error) {
 	var user model.User
 	stmt := `SELECT id, username, email, role FROM users`
 
 	err := r.db.QueryRowContext(ctx, stmt, id).Scan(&user.ID, &user.Username, &user.Email)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, model.ErrNotFound
+		}
 		return nil, err
 	}
 
@@ -36,10 +40,13 @@ func (r *PostgresRepository) CreateUser(ctx context.Context, user *model.User) (
 
 	err := r.db.QueryRowContext(ctx, stmt, user.Username, user.Email, user.Password, user.Role).Scan(&id)
 	if err != nil {
+		if isUniqueViolation(err) {
+			return 0, model.ErrDuplicate
+		}
 		return 0, err
 	}
 
-	return id, err
+	return id, nil
 }
 
 // FindUserByEmail(email string) (*model.User, error)
@@ -49,6 +56,9 @@ func (r *PostgresRepository) FindUserByEmail(ctx context.Context, email string) 
 
 	err := r.db.QueryRowContext(ctx, stmt, email).Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Role)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, model.ErrNotFound
+		}
 		return nil, err
 	}
 

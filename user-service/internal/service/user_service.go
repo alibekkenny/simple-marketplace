@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -11,8 +12,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 type UserService struct {
@@ -28,28 +27,26 @@ func NewUserService(repo repository.UserRepository, jwtKey []byte, validator *va
 func (s *UserService) Register(ctx context.Context, input dto.RegisterInput) (int64, error) {
 	err := s.validator.Struct(input)
 	if err != nil {
-		return 0, status.Errorf(codes.InvalidArgument, "invalid input:\n%v", err)
+		return 0, fmt.Errorf("%w: %v", model.ErrInvalidInput, err)
 	}
 
 	if !isValidRole(input.Role) {
-		return 0, status.Error(codes.InvalidArgument, "invalid role")
+		return 0, fmt.Errorf("%w: invalid role", model.ErrInvalidInput)
 	}
 
 	exists, err := s.repo.ExistsByEmailOrUsername(ctx, input.Email, input.Username)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("%w: %v", model.ErrInternal, err)
 	}
 
 	if exists {
-		return 0, status.Errorf(codes.AlreadyExists, "user with such email or username already exists")
+		return 0, fmt.Errorf("%w: user with such email or username already exists", model.ErrDuplicate)
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("%w: %v", model.ErrInternal, err)
 	}
-
-	fmt.Println(hashedPassword)
 
 	newUser := model.User{
 		Email:    input.Email,
@@ -64,16 +61,22 @@ func (s *UserService) Register(ctx context.Context, input dto.RegisterInput) (in
 func (s *UserService) Login(ctx context.Context, input dto.LoginInput) (string, error) {
 	err := s.validator.Struct(input)
 	if err != nil {
-		return "", status.Errorf(codes.InvalidArgument, "invalid input:\n%v", err)
+		return "", fmt.Errorf("%w: %v", model.ErrInvalidInput, err)
 	}
 
 	foundUser, err := s.repo.FindUserByEmail(ctx, input.Email)
 	if err != nil {
-		return "", status.Errorf(codes.NotFound, "invalid credentials")
+		if errors.Is(err, model.ErrNotFound) {
+			return "", model.ErrInvalidCredentials
+		}
+		return "", fmt.Errorf("%w: %v", model.ErrInternal, err)
 	}
 
 	if err = bcrypt.CompareHashAndPassword([]byte(foundUser.Password), []byte(input.Password)); err != nil {
-		return "", status.Errorf(codes.NotFound, "invalid credentials")
+		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+			return "", model.ErrInvalidCredentials
+		}
+		return "", fmt.Errorf("%w: %v", model.ErrInternal, err)
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{

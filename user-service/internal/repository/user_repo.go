@@ -7,7 +7,7 @@ import (
 )
 
 type UserRepository interface {
-	GetUserByID(ctx context.Context, id string) (*model.User, error)
+	FindUserByID(ctx context.Context, id int64) (*model.User, error)
 	CreateUser(ctx context.Context, user *model.User) (int64, error)
 	FindUserByEmail(ctx context.Context, email string) (*model.User, error)
 	ExistsByEmailOrUsername(ctx context.Context, email, username string) (bool, error)
