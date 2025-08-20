@@ -23,9 +23,10 @@ func main() {
 	zerolog.TimeFieldFormat = time.RFC3339
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	logger := zerolog.New(os.Stdout).With().Timestamp().Str("service", "user-service").Logger()
-	app := app.NewApplication(&logger)
 
 	cfg := config.Load()
+	app := app.NewApplication(&logger, cfg)
+
 	db, err := openDB(cfg.DSN)
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to connect to db")
